@@ -1,8 +1,17 @@
-import { Router } from "express";
-import { getAllTodosCtrl } from "../controllers/todos.controllers.js";
+import { Router } from 'express'
+import {
+  getAllTodosCtrl,
+  createTodoCtrl,
+  updateTodoCtrl,
+  deleteTodoCtrl,
+} from '../controllers/todos.controllers.js'
+import validarJwt from '../middlewares/validar-jwt.js'
 
-const todosRouter = Router();
+const todosRouter = Router()
 
-todosRouter.get("/", getAllTodosCtrl);
+todosRouter.get('/', validarJwt, getAllTodosCtrl)
+todosRouter.post('/', validarJwt, createTodoCtrl)
+todosRouter.put('/:id', validarJwt, updateTodoCtrl)
+todosRouter.delete('/:id', validarJwt, deleteTodoCtrl)
 
-export { todosRouter };
+export { todosRouter }

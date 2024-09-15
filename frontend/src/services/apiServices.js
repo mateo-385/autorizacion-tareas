@@ -9,35 +9,37 @@ export async function getAllTodos() {
   return data
 }
 
-export async function createTask(task) {
+export async function createTodo(todo) {
   const response = await fetch(`${API_URL}`, {
     method: 'POST',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(task),
+    body: JSON.stringify(todo),
   })
 
   const data = await response.json()
 
+  console.log(data)
+
   return data
 }
 
-export async function updateTask(id, task) {
+export async function updateTodo(id, todo) {
   const response = await fetch(`${API_URL}/${id}`, {
     method: 'PUT',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(task),
+    body: JSON.stringify(todo),
   })
 
   return response
 }
 
-export async function deleteTask(id) {
+export async function deleteTodo(id) {
   const response = await fetch(`${API_URL}/${id}`, {
     method: 'DELETE',
     credentials: 'include',
