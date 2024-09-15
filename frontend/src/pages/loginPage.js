@@ -1,130 +1,97 @@
 export const loginPage = () => {
-  const container = document.createElement("div");
+  // Eslements
+  const container = document.createElement('div')
+  const title = document.createElement('h1')
+  const form = document.createElement('form')
+  const error = document.createElement('div')
+  const labelUsername = document.createElement('label')
+  const inputUsername = document.createElement('input')
+  const labelPassword = document.createElement('label')
+  const inputPassword = document.createElement('input')
+  const buttonLogin = document.createElement('button')
 
+  //Attributes
+  container.id = 'container'
+  title.id = 'title'
+  form.id = 'form'
+  error.id = 'message'
+  labelUsername.id = 'label-username'
+  inputUsername.id = 'username'
+  inputUsername.type = 'text'
+  inputUsername.required = true
+  inputUsername.placeholder = 'Username'
+  labelPassword.id = 'label-password'
+  inputPassword.id = 'password'
+  inputPassword.type = 'password'
+  inputPassword.required = true
+  inputPassword.placeholder = 'Password'
+  buttonLogin.id = 'login'
+  buttonLogin.type = 'submit'
+
+  //Classes
   container.classList.add(
-    "flex",
-    "items-center",
-    "justify-center",
-    "h-screen",
-    "bg-gray-200"
-  );
+    'w-96',
+    'mx-auto',
+    'bg-base-200',
+    'p-6',
+    'rounded-lg',
+    'mt-20'
+  )
+  title.classList.add('text-3xl', 'font-semibold', 'mb-5', 'text-center')
+  form.classList.add('login-form', 'flex', 'flex-col', 'gap-4')
+  error.classList.add('text-error')
+  labelUsername.classList.add('input', 'input-bordered', 'flex', 'gap-2')
+  inputUsername.classList.add('grow')
+  labelPassword.classList.add('input', 'input-bordered', 'flex', 'gap-2')
+  inputPassword.classList.add('grow')
+  buttonLogin.classList.add('btn', 'btn-primary', 'rounded-full', 'text-base')
 
-  const form = document.createElement("form");
+  //Content
+  title.textContent = 'Sign In'
+  buttonLogin.textContent = 'Sign In'
 
-  form.classList.add(
-    "flex",
-    "flex-col",
-    "w-1/6",
-    "gap-4",
-    "bg-white",
-    "p-8",
-    "rounded",
-    "shadow-md"
-  );
+  // Events
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
 
-  const title = document.createElement("h2");
+    const username = inputUsername.value
+    const password = inputPassword.value
 
-  title.classList.add("text-2xl", "font-bold", "mb-4");
-  title.textContent = "Login form";
-
-  const usernameInput = document.createElement("input");
-
-  usernameInput.type = "text";
-  usernameInput.id = "username";
-  usernameInput.name = "username";
-  usernameInput.required = true;
-  usernameInput.classList.add(
-    "w-full",
-    "p-2",
-    "border",
-    "border-gray-300",
-    "rounded"
-  );
-  usernameInput.placeholder = "Username";
-
-  const passwordInput = document.createElement("input");
-
-  passwordInput.type = "password";
-  passwordInput.id = "password";
-  passwordInput.required = true;
-  passwordInput.name = "password";
-  passwordInput.classList.add(
-    "w-full",
-    "p-2",
-    "border",
-    "border-gray-300",
-    "rounded"
-  );
-  passwordInput.placeholder = "Password";
-
-  const submitButton = document.createElement("button");
-
-  submitButton.type = "submit";
-  submitButton.classList.add(
-    "w-full",
-    "bg-blue-500",
-    "hover:bg-blue-700",
-    "text-white",
-    "font-bold",
-    "py-2",
-    "px-4",
-    "rounded"
-  );
-  submitButton.textContent = "Login";
-
-  form.appendChild(title);
-  form.appendChild(usernameInput);
-  form.appendChild(passwordInput);
-  form.appendChild(submitButton);
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const username = usernameInput.value;
-    const password = passwordInput.value;
-
-    // Validación básica
     if (!username || !password) {
-      document.getElementById("message").innerText =
-        "Por favor, completa todos los campos.";
-      return;
+      error.textContent = 'Por favor, completa todos los campos.'
+      return
     }
 
     try {
-      const response = await fetch("http://localhost:4000/auth/sign-in", {
-        method: "POST",
-        credentials: "include", // Importante para enviar las cookies de sesión
+      const response = await fetch('http://localhost:4000/auth/sign-in', {
+        method: 'POST',
+        credentials: 'include',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password }),
-      });
+      })
 
       if (!response.ok) {
-        divError.innerText = "Credenciales inválidas";
-        divError.classList.add(
-          "bg-danger",
-          "text-white",
-          "text-center",
-          "rounded",
-          "p-2",
-          "mt-3"
-        );
-
-        setTimeout(() => {
-          divError.hidden = true;
-        }, 3500);
-
-        return;
+        error.textContent = 'Incorrect username or password'
+        return
       }
 
-      const data = await response.json();
-      console.log(data);
-      window.location.pathname = "/home";
+      const data = await response.json()
+      console.log(data)
+      window.location.pathname = '/home'
     } catch (error) {}
-  });
+  })
 
-  container.appendChild(form);
+  // Append elements
+  labelUsername.appendChild(inputUsername)
+  labelPassword.appendChild(inputPassword)
+  form.appendChild(labelUsername)
+  form.appendChild(labelPassword)
+  form.appendChild(error)
+  form.appendChild(buttonLogin)
+  container.appendChild(title)
+  container.appendChild(form)
 
-  return container;
-};
+  return container
+}

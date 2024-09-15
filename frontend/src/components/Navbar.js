@@ -21,8 +21,19 @@ export function Navbar(user) {
   msg.classList.add('text-base')
   logout.classList.add('btn', 'btn-outline')
 
-  // Append
+  // Events
+  logout.addEventListener('click', async () => {
+    const response = await fetch('http://localhost:4000/auth/sign-out', {
+      method: 'POST',
+      credentials: 'include',
+    })
 
+    if (response.ok) {
+      window.location.pathname = '/'
+    }
+  })
+
+  // Append
   navbarStart.appendChild(logo)
   navbarEnd.appendChild(msg)
   navbarEnd.appendChild(logout)
