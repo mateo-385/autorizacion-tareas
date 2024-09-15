@@ -1,113 +1,141 @@
 export const todosPage = () => {
-  const container = document.createElement("div");
+  // Elements
+  const main = document.createElement('div')
+  const todosContainer = document.createElement('div')
+  const taskForm = document.createElement('form')
+  const taskInput = document.createElement('input')
+  const taskButton = document.createElement('button')
+  const divider = document.createElement('div')
+  const todos = document.createElement('div')
 
-  container.classList.add(
-    "flex",
-    "flex-col",
-    "items-center",
-    "justify-center",
-    "h-screen",
-    "bg-gray-200"
-  );
+  // Attributes
+  todosContainer.id = 'todos-container'
 
-  const btnHome = document.createElement("button");
+  taskForm.autocomplete = 'off'
+  taskForm.id = 'task-form'
 
-  btnHome.classList.add(
-    "bg-blue-500",
-    "text-white",
-    "p-2",
-    "rounded",
-    "hover:bg-blue-600",
-    "mb-4"
-  );
+  taskInput.id = 'task-input'
+  taskInput.type = 'text'
+  taskInput.placeholder = 'Enter a task'
+  taskInput.required = true
 
-  btnHome.textContent = "Home";
+  taskButton.id = 'task-button'
+  taskButton.type = 'submit'
+  taskButton.textContent = 'Add Task'
 
-  btnHome.addEventListener("click", () => {
-    window.location.pathname = "/home";
-  });
+  divider.textContent = 'My Tasks'
 
-  const title = document.createElement("h1");
+  todos.id = 'todos'
 
-  title.classList.add("text-3xl", "font-bold", "mb-4");
-  title.textContent = "List of Todos";
+  // Classes
+  main.classList.add('w-full')
 
-  const table = document.createElement("table");
+  todosContainer.classList.add(
+    'flex',
+    'flex-col',
+    'items-center',
+    'my-5',
+    'p-6',
+    'max-w-lg',
+    'mx-auto',
+    'rounded-xl',
+    'shadow-md',
+    'bg-base-300',
+    'border',
+    'border-gray-200',
+    'dark:border-gray-700'
+  )
 
-  table.classList.add(
-    "w-1/2",
-    "bg-white",
-    "shadow-md",
-    "h-[700px]",
-    "overflow-y-scroll"
-  );
+  taskForm.classList.add('flex', 'items-center', 'space-x-2', 'w-full')
 
-  const thead = document.createElement("thead");
-  const tr = document.createElement("tr");
-  const th1 = document.createElement("th");
-  th1.classList.add("border", "px-4", "py-2");
-  th1.textContent = "ID";
+  taskInput.classList.add(
+    'input',
+    'input-bordered',
+    'w-full',
+    'focus:ring',
+    'focus:ring-opacity-50',
+    'focus:ring-primary',
+    'text-lg',
+    'rounded-full',
+    'dark:placeholder-neutral-600'
+  )
 
-  const th2 = document.createElement("th");
-  th2.classList.add("border", "px-4", "py-2");
-  th2.textContent = "Title";
+  taskButton.classList.add(
+    'btn',
+    'btn-primary',
+    'rounded-full',
+    'text-lg',
+    'font-semibold'
+  )
 
-  const th3 = document.createElement("th");
-  th3.classList.add("border", "px-4", "py-2");
-  th3.textContent = "Completed";
+  divider.classList.add('divider', 'font-semibold')
 
-  const th4 = document.createElement("th");
-  th4.classList.add("border", "px-4", "py-2");
-  th4.textContent = "Owner Id";
+  todos.classList.add('flex', 'flex-col', 'gap-1', 'w-full')
 
-  tr.appendChild(th1);
-  tr.appendChild(th2);
-  tr.appendChild(th3);
-  tr.appendChild(th4);
-
-  thead.appendChild(tr);
-
-  const tbody = document.createElement("tbody");
-
-  tbody.classList.add("text-center");
-  table.appendChild(thead);
-  table.appendChild(tbody);
-
-  container.appendChild(btnHome);
-  fetch("http://localhost:4000/todos")
+  fetch('http://localhost:4000/todos', {
+    method: 'GET',
+    credentials: 'include',
+  })
     .then((response) => response.json())
     .then((data) => {
       data.todos.forEach((todo) => {
-        if (todo.id > 10) return;
+        //Elements
 
-        const tr = document.createElement("tr");
+        const todoElement = document.createElement('div')
+        const todoCheckbox = document.createElement('input')
+        const todoTitle = document.createElement('span')
+        const todoActions = document.createElement('div')
+        const todoEdit = document.createElement('button')
+        const todoDelete = document.createElement('button')
 
-        const td1 = document.createElement("td");
-        td1.classList.add("border", "px-4", "py-2");
-        td1.textContent = todo.id;
+        //Attributes
+        todoElement.id = `todo-${todo.id}`
 
-        const td2 = document.createElement("td");
-        td2.classList.add("border", "px-4", "py-2");
-        td2.textContent = todo.title;
+        todoElement.classList.add('flex', 'items-center', 'mb-2')
 
-        const td3 = document.createElement("td");
-        td3.classList.add("border", "px-4", "py-2");
-        td3.textContent = todo.completed ? "Sí" : "No";
+        //Checkbox
+        todoCheckbox.type = 'checkbox'
+        todoCheckbox.id = `todo-checkbox-${todo.id}`
+        todoCheckbox.checked = todo.completed ? true : false
+        todoCheckbox.classList.add(
+          'checkbox',
+          'checkbox-md',
+          'rounded-full',
+          'ml-3',
+          'mr-2'
+        )
 
-        const td4 = document.createElement("td");
-        td4.classList.add("border", "px-4", "py-2");
-        td4.textContent = todo.owner;
+        //Title
+        todoTitle.id = `task-title-${todo.id}`
+        todoTitle.classList.add('text-xl', 'pl-2', 'py-3', 'flex-grow')
+        todoTitle.textContent = todo.title
 
-        tr.appendChild(td1);
-        tr.appendChild(td2);
-        tr.appendChild(td3);
-        tr.appendChild(td4);
-        tbody.appendChild(tr);
-      });
-    });
+        //Actions
+        todoActions.classList.add('flex', 'gap-2')
 
-  container.appendChild(title);
-  container.appendChild(table);
+        todoEdit.id = `todo-edit-${todo.id}`
+        todoEdit.textContent = 'Edit'
+        todoEdit.classList.add('btn', 'btn-sm', 'btn-success', 'font-semibold')
 
-  return container;
-};
+        todoDelete.id = `todo-delete-${todo.id}`
+        todoDelete.textContent = 'Delete'
+        todoDelete.classList.add('btn', 'btn-sm', 'btn-error', 'font-semibold')
+
+        //Append
+        todoElement.appendChild(todoCheckbox)
+        todoElement.appendChild(todoTitle)
+        todoActions.appendChild(todoEdit)
+        todoActions.appendChild(todoDelete)
+        todoElement.appendChild(todoActions)
+        todos.appendChild(todoElement)
+      })
+    })
+
+  taskForm.appendChild(taskInput)
+  taskForm.appendChild(taskButton)
+  todosContainer.appendChild(taskForm)
+  todosContainer.appendChild(divider)
+  todosContainer.appendChild(todos)
+  main.appendChild(todosContainer)
+  return main
+}
