@@ -1,3 +1,6 @@
+import { getAllTodos } from '../services/apiServices.js'
+import { renderTodos } from '../utils/renderTodos.js'
+
 export const todosPage = () => {
   // Elements
   const main = document.createElement('div')
@@ -6,7 +9,7 @@ export const todosPage = () => {
   const taskInput = document.createElement('input')
   const taskButton = document.createElement('button')
   const divider = document.createElement('div')
-  const todos = document.createElement('div')
+  const todosList = document.createElement('div')
 
   // Attributes
   todosContainer.id = 'todos-container'
@@ -25,7 +28,7 @@ export const todosPage = () => {
 
   divider.textContent = 'My Tasks'
 
-  todos.id = 'todos'
+  todosList.id = 'todos'
 
   // Classes
   main.classList.add('w-full')
@@ -70,72 +73,21 @@ export const todosPage = () => {
 
   divider.classList.add('divider', 'font-semibold')
 
-  todos.classList.add('flex', 'flex-col', 'gap-1', 'w-full')
+  todosList.classList.add('flex', 'flex-col', 'gap-1', 'w-full')
 
-  fetch('http://localhost:4000/todos', {
-    method: 'GET',
-    credentials: 'include',
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      data.todos.forEach((todo) => {
-        //Elements
-
-        const todoElement = document.createElement('div')
-        const todoCheckbox = document.createElement('input')
-        const todoTitle = document.createElement('span')
-        const todoActions = document.createElement('div')
-        const todoEdit = document.createElement('button')
-        const todoDelete = document.createElement('button')
-
-        //Attributes
-        todoElement.id = `todo-${todo.id}`
-
-        todoElement.classList.add('flex', 'items-center', 'mb-2')
-
-        //Checkbox
-        todoCheckbox.type = 'checkbox'
-        todoCheckbox.id = `todo-checkbox-${todo.id}`
-        todoCheckbox.checked = todo.completed ? true : false
-        todoCheckbox.classList.add(
-          'checkbox',
-          'checkbox-md',
-          'rounded-full',
-          'ml-3',
-          'mr-2'
-        )
-
-        //Title
-        todoTitle.id = `task-title-${todo.id}`
-        todoTitle.classList.add('text-xl', 'pl-2', 'py-3', 'flex-grow')
-        todoTitle.textContent = todo.title
-
-        //Actions
-        todoActions.classList.add('flex', 'gap-2')
-
-        todoEdit.id = `todo-edit-${todo.id}`
-        todoEdit.textContent = 'Edit'
-        todoEdit.classList.add('btn', 'btn-sm', 'btn-success', 'font-semibold')
-
-        todoDelete.id = `todo-delete-${todo.id}`
-        todoDelete.textContent = 'Delete'
-        todoDelete.classList.add('btn', 'btn-sm', 'btn-error', 'font-semibold')
-
-        //Append
-        todoElement.appendChild(todoCheckbox)
-        todoElement.appendChild(todoTitle)
-        todoActions.appendChild(todoEdit)
-        todoActions.appendChild(todoDelete)
-        todoElement.appendChild(todoActions)
-        todos.appendChild(todoElement)
-      })
+  getAllTodos().then((data) => {
+    data.todos.forEach((todo) => {
+      const todoElement = renderTodos(todo)
+      todosList.appendChild(todoElement)
     })
+  })
 
   taskForm.appendChild(taskInput)
   taskForm.appendChild(taskButton)
   todosContainer.appendChild(taskForm)
   todosContainer.appendChild(divider)
-  todosContainer.appendChild(todos)
+  todosContainer.appendChild(todosList)
   main.appendChild(todosContainer)
+
   return main
 }
