@@ -8,18 +8,18 @@ export function Navbar(user) {
   const logout = document.createElement('button')
 
   // Attributes
-  logo.href = '/'
+  logo.href = '/home'
   logo.textContent = 'Task App'
   msg.textContent = `Hi, ${user.username}`
   logout.textContent = 'Logout'
 
   // Classes
-  navbar.classList.add('navbar')
+  navbar.classList.add('navbar', 'px-5')
   navbarStart.classList.add('navbar-start')
   navbarEnd.classList.add('navbar-end', 'space-x-4')
   logo.classList.add('btn', 'btn-ghost', 'text-xl')
   msg.classList.add('text-base')
-  logout.classList.add('btn', 'btn-outline')
+  logout.classList.add('btn', 'btn-primary', 'btn-outline')
 
   // Events
   logout.addEventListener('click', async () => {

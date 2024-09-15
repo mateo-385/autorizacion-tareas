@@ -59,14 +59,13 @@ export const todosPage = () => {
     'focus:ring-opacity-50',
     'focus:ring-primary',
     'text-lg',
-    'rounded-full',
     'dark:placeholder-neutral-600'
   )
 
   todoButton.classList.add(
     'btn',
     'btn-primary',
-    'rounded-full',
+
     'text-lg',
     'font-semibold'
   )

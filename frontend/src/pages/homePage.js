@@ -1,63 +1,51 @@
+import logo from '../../public/homepage.gif'
+
 export const homePage = () => {
-  const container = document.createElement("div");
+  // Elements
+  const container = document.createElement('div')
+  const logoHome = document.createElement('div')
+  const btnLogout = document.createElement('button')
+  const btnTodos = document.createElement('button')
 
+  // Attributes
+  logoHome.innerHTML = `<img src="${logo}" alt="homepage" />`
+  btnLogout.textContent = 'Logout'
+  btnTodos.textContent = 'View todos'
+
+  // Classes
   container.classList.add(
-    "flex",
-    "items-center",
-    "justify-center",
-    "h-screen",
-    "bg-gray-200",
-    "flex-col",
-    "gap-4"
-  );
+    'flex',
+    'items-center',
+    'justify-center',
+    'h-screen',
+    'flex-col',
+    'gap-4'
+  )
 
-  const title = document.createElement("h1");
+  btnLogout.classList.add('btn', 'btn-primary', 'text-lg')
 
-  title.classList.add("text-2xl", "font-bold", "mb-4");
-  title.textContent = "Home Page";
+  btnTodos.classList.add('btn', 'btn-secondary', 'text-lg')
 
-  const btnLogout = document.createElement("button");
-
-  btnLogout.classList.add(
-    "bg-red-500",
-    "text-white",
-    "p-2",
-    "rounded",
-    "hover:bg-red-600"
-  );
-
-  btnLogout.textContent = "Logout";
-
-  btnLogout.addEventListener("click", async () => {
-    const response = await fetch("http://localhost:4000/auth/sign-out", {
-      method: "POST",
-      credentials: "include",
-    });
+  // Events
+  btnLogout.addEventListener('click', async () => {
+    const response = await fetch('http://localhost:4000/auth/sign-out', {
+      method: 'POST',
+      credentials: 'include',
+    })
 
     if (response.ok) {
-      window.location.pathname = "/";
+      window.location.pathname = '/'
     }
-  });
+  })
 
-  const btnTodos = document.createElement("button");
+  btnTodos.addEventListener('click', () => {
+    window.location.pathname = '/todos'
+  })
 
-  btnTodos.classList.add(
-    "bg-blue-500",
-    "text-white",
-    "p-2",
-    "rounded",
-    "hover:bg-blue-600"
-  );
+  // Append
+  container.appendChild(logoHome)
+  container.appendChild(btnTodos)
+  container.appendChild(btnLogout)
 
-  btnTodos.textContent = "View todos";
-
-  btnTodos.addEventListener("click", () => {
-    window.location.pathname = "/todos";
-  });
-
-  container.appendChild(title);
-  container.appendChild(btnTodos);
-  container.appendChild(btnLogout);
-
-  return container;
-};
+  return container
+}
