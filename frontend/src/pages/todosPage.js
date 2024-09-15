@@ -1,32 +1,32 @@
-import { getAllTodos } from '../services/apiServices.js'
+import { getAllTodos, createTodo } from '../services/apiServices.js'
 import { renderTodos } from '../utils/renderTodos.js'
 
 export const todosPage = () => {
   // Elements
   const main = document.createElement('div')
   const todosContainer = document.createElement('div')
-  const taskForm = document.createElement('form')
-  const taskInput = document.createElement('input')
-  const taskButton = document.createElement('button')
+  const todoForm = document.createElement('form')
+  const todoInput = document.createElement('input')
+  const todoButton = document.createElement('button')
   const divider = document.createElement('div')
   const todosList = document.createElement('div')
 
   // Attributes
   todosContainer.id = 'todos-container'
 
-  taskForm.autocomplete = 'off'
-  taskForm.id = 'task-form'
+  todoForm.autocomplete = 'off'
+  todoForm.id = 'todo-form'
 
-  taskInput.id = 'task-input'
-  taskInput.type = 'text'
-  taskInput.placeholder = 'Enter a task'
-  taskInput.required = true
+  todoInput.id = 'todo-input'
+  todoInput.type = 'text'
+  todoInput.placeholder = 'Add a new task'
+  todoInput.required = true
 
-  taskButton.id = 'task-button'
-  taskButton.type = 'submit'
-  taskButton.textContent = 'Add Task'
+  todoButton.id = 'todo-button'
+  todoButton.type = 'submit'
+  todoButton.textContent = 'Add Task'
 
-  divider.textContent = 'My Tasks'
+  divider.textContent = 'My tasks'
 
   todosList.id = 'todos'
 
@@ -49,9 +49,9 @@ export const todosPage = () => {
     'dark:border-gray-700'
   )
 
-  taskForm.classList.add('flex', 'items-center', 'space-x-2', 'w-full')
+  todoForm.classList.add('flex', 'items-center', 'space-x-2', 'w-full')
 
-  taskInput.classList.add(
+  todoInput.classList.add(
     'input',
     'input-bordered',
     'w-full',
@@ -63,7 +63,7 @@ export const todosPage = () => {
     'dark:placeholder-neutral-600'
   )
 
-  taskButton.classList.add(
+  todoButton.classList.add(
     'btn',
     'btn-primary',
     'rounded-full',
@@ -82,9 +82,28 @@ export const todosPage = () => {
     })
   })
 
-  taskForm.appendChild(taskInput)
-  taskForm.appendChild(taskButton)
-  todosContainer.appendChild(taskForm)
+  // Events
+  todoForm.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    const todo = todoInput.value
+
+    if (!todo) {
+      return
+    }
+
+    const response = await createTodo({ title: todo })
+
+    if (response) {
+      const todoElement = renderTodos(response.todo)
+      todosList.appendChild(todoElement)
+      todoInput.value = ''
+    }
+  })
+
+  todoForm.appendChild(todoInput)
+  todoForm.appendChild(todoButton)
+  todosContainer.appendChild(todoForm)
   todosContainer.appendChild(divider)
   todosContainer.appendChild(todosList)
   main.appendChild(todosContainer)

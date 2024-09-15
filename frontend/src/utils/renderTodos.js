@@ -1,3 +1,9 @@
+import {
+  editTodoCompleted,
+  editTodoTitle,
+  deleteTodoElement,
+} from './todoManager'
+
 export function renderTodos(todo) {
   //Elements
   const todoElement = document.createElement('div')
@@ -17,6 +23,7 @@ export function renderTodos(todo) {
   todoCheckbox.checked = todo.completed ? true : false
   todoCheckbox.classList.add(
     'checkbox',
+    'checkbox-primary',
     'checkbox-md',
     'rounded-full',
     'ml-3',
@@ -38,6 +45,19 @@ export function renderTodos(todo) {
   todoDelete.id = `todo-delete-${todo.id}`
   todoDelete.textContent = 'Delete'
   todoDelete.classList.add('btn', 'btn-sm', 'btn-error', 'font-semibold')
+
+  //Events
+  todoCheckbox.addEventListener('change', async () => {
+    await editTodoCompleted(todo)
+  })
+
+  todoEdit.addEventListener('click', async () => {
+    await editTodoTitle(todo)
+  })
+
+  todoDelete.addEventListener('click', async () => {
+    await deleteTodoElement(todo)
+  })
 
   //Append
   todoElement.appendChild(todoCheckbox)
