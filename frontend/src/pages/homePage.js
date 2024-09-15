@@ -1,4 +1,4 @@
-import logo from '../../public/homepage.gif'
+import logo from '../assets/homepage.gif'
 
 export const homePage = () => {
   // Elements
